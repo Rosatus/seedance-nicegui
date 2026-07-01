@@ -1,0 +1,47 @@
+[project]
+name = "seedance-nicegui"
+version = "0.1.0"
+description = "Offline-friendly NiceGUI console for submitting Seedance-compatible video generation tasks to private intranet endpoints."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "AGPL-3.0-only"
+keywords = ["seedance", "nicegui", "video-generation", "intranet", "offline"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Video",
+    "Topic :: Software Development :: User Interfaces",
+]
+dependencies = [
+    "httpx>=0.28.1",
+    "nicegui>=3.13.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Rosatus/seedance-nicegui"
+Issues = "https://github.com/Rosatus/seedance-nicegui/issues"
+Releases = "https://github.com/Rosatus/seedance-nicegui/releases"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.4.0",
+]
+build = [
+    "pyinstaller>=6.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.0",
+    "pyinstaller>=6.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

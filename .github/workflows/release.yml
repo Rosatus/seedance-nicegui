@@ -1,0 +1,85 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.asset-name }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            asset-name: seedance-linux-x86_64
+            archive-kind: tar
+          - os: windows-latest
+            asset-name: seedance-windows-x64
+            archive-kind: zip
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev,build]"
+
+      - name: Run tests
+        run: python -m pytest
+
+      - name: Build onedir package
+        run: python -m nicegui.scripts.pack --onedir --name seedance --clean --noconfirm app.py
+
+      - name: Archive Linux package
+        if: matrix.archive-kind == 'tar'
+        shell: bash
+        run: |
+          mkdir -p packages
+          tar -czf "packages/${{ matrix.asset-name }}-onedir.tar.gz" -C dist seedance
+
+      - name: Archive Windows package
+        if: matrix.archive-kind == 'zip'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path packages | Out-Null
+          Compress-Archive -Path dist\seedance -DestinationPath "packages\${{ matrix.asset-name }}-onedir.zip" -Force
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset-name }}
+          path: packages/*
+          if-no-files-found: error
+
+  publish:
+    name: Publish GitHub Release
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-assets/*
+          generate_release_notes: true

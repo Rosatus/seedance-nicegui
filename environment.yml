@@ -1,0 +1,14 @@
+name: seedance-build
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip>=24
+  - setuptools
+  - wheel
+  - pip:
+      - httpx>=0.28.1
+      - nicegui>=3.13.0
+      - pyinstaller>=6.0
+      - pytest>=8.4.0
