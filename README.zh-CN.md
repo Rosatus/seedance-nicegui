@@ -1,6 +1,6 @@
 # Seedance NiceGUI
 
-[English README](README.md)
+[English](README.md) | 简体中文
 
 Seedance NiceGUI 是一个本地 Web 工作台，用于向企业内网中的 Seedance 兼容视频生成任务端点提交请求、上传参考图片/音频、查看请求体、记录任务 ID 并轮询任务状态。
 

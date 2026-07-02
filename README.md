@@ -1,6 +1,6 @@
 # Seedance NiceGUI
 
-[中文说明](README.zh-CN.md)
+English | [简体中文](README.zh-CN.md)
 
 Seedance NiceGUI is a local web console for submitting Seedance-compatible video generation tasks to private intranet endpoints. It is designed for enterprise environments where the generation gateway is deployed inside the company network and the user workstation cannot access the public internet.
 
